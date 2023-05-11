@@ -56,6 +56,15 @@ def createHTML():
     # but the quote must be embeded in the right place
   pass
 
+'''
+Consider creating a custom html element
+and then giving it some powers with javascript
+Links:
+1. https://yaroslavweb.github.io/Neon-Generator/
+2. https://stackoverflow.com/questions/5682943/how-to-create-custom-tags-for-html
+3. ..
+'''
+
 
 
 
