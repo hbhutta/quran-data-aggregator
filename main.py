@@ -50,7 +50,13 @@ def verseInBounds(surah: int, verse: int) -> bool:
 3. Create a new file (e.g., test.html) and paste the HTML string into it
 '''
 def createHTML():
+  html = 'test.html' # Create this if not already created, just put in boiler plate code 
+  with open('test.html', 'w') as f:
+    f.write(getText(-1,-1)) # put some surah and verse number
+    # but the quote must be embeded in the right place
   pass
+
+
 
 
 
