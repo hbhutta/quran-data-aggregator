@@ -42,6 +42,17 @@ def verseInBounds(surah: int, verse: int) -> bool:
       return True
   else:
     return False
+  
+  
+'''
+1. Create HTML (as string)
+2. Embed quote output from getText() into the HMTL 
+3. Create a new file (e.g., test.html) and paste the HTML string into it
+'''
+def createHTML():
+  pass
+
+
 
 
 
