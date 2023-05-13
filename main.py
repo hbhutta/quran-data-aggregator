@@ -1,71 +1,35 @@
 import requests
 
 
-
-
-def getQuote(sura: int, aya: int, ayaRange: int) -> str:
-  # sura = int(input("Enter sura #: "))
-  # aya = int(input("Enter aya #: "))
+def getQuote(sura: int, ayaRangeStart: int, ayaRangeEnd: int, includeTranslation: bool) -> str:
+  # ayaRangeEnd += 1
 
   apiLinkForSura = f'https://quranenc.com/api/v1/translation/sura/english_saheeh/{sura}'
   apiLinkForAya = ''
 
   suraAPI = requests.get(apiLinkForSura)
+  
   ayaAPI = ''
 
   if (1 <= sura and sura <= 114): # Sura number limit is 114
     suraJson = suraAPI.json()
     ayaLimit = len(suraJson["result"])
+    print(f"This sura has {ayaLimit} ayat")
 
-    if (range <= ayaLimit):
-      for ayaNumber in range(ayaRange):
-
-
-
-
-
-    # if (1 <= aya and aya <= ayaLimit): # Aya limit for that specific sura
-      apiLinkForAya = f'https://quranenc.com/api/v1/translation/aya/english_saheeh/{sura}/{aya}'
-      ayaAPI = requests.get(apiLinkForAya)
-      json = ayaAPI.json()
-      quote = json["result"]["arabic_text"]
-      print(quote)
+    if (1 <= ayaRangeStart and ayaRangeStart <= ayaLimit) and (1 <= ayaRangeEnd and ayaRangeEnd <= ayaLimit):
+      if includeTranslation:
+        for ayaNumber in range(ayaRangeStart, ayaRangeEnd + 1): # +1 so that ayaRangeEnd aya is included
+          apiLinkForAya = f'https://quranenc.com/api/v1/translation/aya/english_saheeh/{sura}/{ayaNumber}'
+          ayaAPI = requests.get(apiLinkForAya)
+          json = ayaAPI.json()
+          quote = json["result"]["arabic_text"]
+          quoteTranslation = json["result"]["translation"]
+          print(quote + " " + quoteTranslation + " ")
+    else:
+      print("Aya range(s) out of bounds")
+      pass
   else:
-    print(-1)
-    quit()
-  pass
+    print("Sura range(s) out of bounds")
+    pass
 
-
-# quranenc = requests.get(api)
-# json = ''
-# if quranenc.status_code == 200:
-#   json = quranenc.json()
-#   whatWeWant = json["result"]["arabic_text"]
-#   print(whatWeWant)
-# else:
-#   print("-1")
-#   quit()
-
-# '''
-# Return: The specified surah verse
-# Constraints: 1 <= surah <= 114 && 
-# '''
-# def getText(surah: int, verse: int) -> str:
-#   text = ''
-#   if verseInBounds(surah, verse):
-#       text = surahJson["result"][verse]["arabic_text"]
-#   return text
-
-# def verseInBounds(surah: int, verse: int) -> bool:
-#   if (1 <= surah and surah <= 114):
-#     surahJson = quranenc.json()
-#     surahVerseLimit = len(surahJson["result"])
-#     assert type(surahVerseLimit) == int
-#     if (1 <= verse and verse <= surahVerseLimit):
-#       return True
-#   else:
-#     return False
-
-# surah = 2
-# verse = 1
-# print(getText(surah,verse))
+getQuote(1, 1, 7, True) # First aya of Al-Fatihah is bismillah
