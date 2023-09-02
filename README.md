@@ -1,10 +1,5 @@
 # QuranAPI
-Embed quotes from the Holy Quran in your website
+A script to collect and clean data from the [quranenc API](https://quranenc.com/en/home/api/) for publication on Kaggle.
+This script can be modified to collect general text data from the Holy Bible and the Torah from similar public APIs.
 
-# Outline
-Anyone using this API can embed a quote from the Holy Quran into their website 
-(as a small HTML div containing a paragraph of text for example). The standard
-encoding will be in UTF-8. 
-
-# Other websites for inspiration 
-1. https://www.noblequran.com/translation/surah5.html
+The dataset on Kaggle is intended to be used for practicing NLP and semantic analysis on the chapters of the Holy Quran
