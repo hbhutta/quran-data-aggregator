@@ -1,35 +1,36 @@
+import csv
+import os
 import requests
+from pprint import pprint
+
+'''
+Gets data of (verse/ayah, translation) pair for each verse in sura, given the sura number
+Puts data into dictionary, which is converted into a pandas dataframe
+'''
+
+if not os.path.exists('quran'):
+   os.makedirs('quran')
+
+for chapter in range(1,115):
+  with open(f'quran/{chapter}.csv', 'w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file)
+    writer.writerow(['surah_num', 'verse_num', 'verse', 'translation'])
+
+    sura_api_link = f'https://quranenc.com/api/v1/translation/sura/english_saheeh/{chapter}'
+    sura_api = requests.get(sura_api_link)
+    sura_json = sura_api.json()
+    total_ayas = len(sura_json['result'])
+
+    for aya in range(1, total_ayas+1):
+      apiLinkForAya = f'https://quranenc.com/api/v1/translation/aya/english_saheeh/{chapter}/{aya}'
+      ayaAPI = requests.get(apiLinkForAya)
+      json = ayaAPI.json()
+
+      quote = json["result"]["arabic_text"]
+      quoteTranslation = json["result"]["translation"]
+
+      # Verse number | Verse | Translation
+      writer.writerow([chapter, aya, quote, quoteTranslation])
 
 
-def getQuote(sura: int, ayaRangeStart: int, ayaRangeEnd: int, includeTranslation: bool) -> str:
-  # ayaRangeEnd += 1
 
-  apiLinkForSura = f'https://quranenc.com/api/v1/translation/sura/english_saheeh/{sura}'
-  apiLinkForAya = ''
-
-  suraAPI = requests.get(apiLinkForSura)
-  
-  ayaAPI = ''
-
-  if (1 <= sura and sura <= 114): # Sura number limit is 114
-    suraJson = suraAPI.json()
-    ayaLimit = len(suraJson["result"])
-    print(f"This sura has {ayaLimit} ayat")
-
-    if (1 <= ayaRangeStart and ayaRangeStart <= ayaLimit) and (1 <= ayaRangeEnd and ayaRangeEnd <= ayaLimit):
-      if includeTranslation:
-        for ayaNumber in range(ayaRangeStart, ayaRangeEnd + 1): # +1 so that ayaRangeEnd aya is included
-          apiLinkForAya = f'https://quranenc.com/api/v1/translation/aya/english_saheeh/{sura}/{ayaNumber}'
-          ayaAPI = requests.get(apiLinkForAya)
-          json = ayaAPI.json()
-          quote = json["result"]["arabic_text"]
-          quoteTranslation = json["result"]["translation"]
-          print(quote + " " + quoteTranslation + " ")
-    else:
-      print("Aya range(s) out of bounds")
-      pass
-  else:
-    print("Sura range(s) out of bounds")
-    pass
-
-getQuote(1, 1, 7, True) # First aya of Al-Fatihah is bismillah
